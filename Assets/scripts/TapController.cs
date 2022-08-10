@@ -49,7 +49,7 @@ public class TapController : MonoBehaviour {
 	void OnGameStarted(){
 		rigidbody.velocity = Vector3.zero;
 		rigidbody.simulated = true;
-
+		rigidbody.gravityScale = 1;
 	}
 	void OnGameOverConfirmed(){
 		transform.localPosition = startPos;
