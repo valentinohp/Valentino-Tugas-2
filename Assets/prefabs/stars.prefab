@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4638813674429020}
   - component: {fileID: 212342887553037058}
   m_Layer: 0
-  m_Name: stars
+  m_Name: Stars
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

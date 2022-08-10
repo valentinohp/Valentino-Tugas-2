@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 27260326}
   - component: {fileID: 27260327}
   m_Layer: 0
-  m_Name: tap
+  m_Name: Tap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -299,7 +299,7 @@ GameObject:
   - component: {fileID: 424417468}
   - component: {fileID: 424417469}
   m_Layer: 0
-  m_Name: score
+  m_Name: Score
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -430,7 +430,7 @@ GameObject:
   - component: {fileID: 594842943}
   - component: {fileID: 594842942}
   m_Layer: 0
-  m_Name: plane
+  m_Name: Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -933,7 +933,7 @@ GameObject:
   - component: {fileID: 1013853742}
   - component: {fileID: 1013853743}
   m_Layer: 0
-  m_Name: die
+  m_Name: Die
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1062,7 +1062,7 @@ GameObject:
   - component: {fileID: 1026261949}
   - component: {fileID: 1026261948}
   m_Layer: 0
-  m_Name: ground
+  m_Name: Ground
   m_TagString: DeadZone
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1404,7 +1404,7 @@ GameObject:
   - component: {fileID: 1184626681}
   - component: {fileID: 1184626682}
   m_Layer: 0
-  m_Name: background
+  m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

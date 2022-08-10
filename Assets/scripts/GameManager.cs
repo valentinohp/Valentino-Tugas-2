@@ -2,106 +2,115 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-public class GameManager : MonoBehaviour {
+public class GameManager : MonoBehaviour
+{
+    public delegate void GameDelegate();
+    public static event GameDelegate OnGameStarted;
+    public static event GameDelegate OnGameOverConfirmed;
 
-	public delegate void GameDelegate ();
-	public static event GameDelegate OnGameStarted;
-	public static event GameDelegate OnGameOverConfirmed;
+    public static GameManager Instance;
 
-	public static GameManager Instance;
+    public GameObject startPage;
+    public GameObject gameOverPage;
+    public GameObject countdownPage;
+    public Text scoreText;
 
-	public GameObject startPage;
-	public GameObject gameOverPage;
-	public GameObject countdownPage;
-	public Text scoreText;
+    enum PageState
+    {
+        None,
+        Start,
+        GameOver,
+        Countdown
+    }
 
-	enum PageState{
-		None,
-		Start,
-		GameOver,
-		Countdown
-	}
+    int score = 0;
+    bool gameOver = true;
 
-	int score = 0;
-	bool gameOver = true;
+    public bool GameOver { get { return gameOver; } }
 
-	public bool GameOver { get { return gameOver; } }
+    void Awake()
+    {
+        Instance = this;
+    }
 
-	void Awake(){
-	
-		Instance = this;
-	}
+    void OnEnable()
+    {
+        CountdownText.OnCountdownFinished += OnCountdownFinished;
+        TapController.OnPlayerDied += OnPlayerDied;
+        TapController.OnPlayerScored += OnPlayerScored;
+    }
 
-	void OnEnable(){
-		CountdownText.OnCountdownFinished += OnCountdownFinished;
-		TapController.OnPlayerDied += OnPlayerDied;
-		TapController.OnPlayerScored += OnPlayerScored;
-	}
+    void OnDisable()
+    {
+        CountdownText.OnCountdownFinished -= OnCountdownFinished;
+        TapController.OnPlayerDied -= OnPlayerDied;
+        TapController.OnPlayerScored -= OnPlayerScored;
 
-	void OnDisable(){
-		CountdownText.OnCountdownFinished -= OnCountdownFinished;
-		TapController.OnPlayerDied -= OnPlayerDied;
-		TapController.OnPlayerScored -= OnPlayerScored;
-	
-	}
+    }
 
-	void OnCountdownFinished(){
-		SetPageState (PageState.None);
-		gameOver = false;
-		OnGameStarted ();
-		score = 0;
-	}
+    void OnCountdownFinished()
+    {
+        SetPageState(PageState.None);
+        gameOver = false;
+        OnGameStarted();
+        score = 0;
+    }
 
-	void OnPlayerDied(){
-		gameOver = true;
-		int savedScore = PlayerPrefs.GetInt ("highscore");
-		if (score > savedScore) {
-			PlayerPrefs.SetInt ("highscore", score);
+    void OnPlayerDied()
+    {
+        gameOver = true;
+        int savedScore = PlayerPrefs.GetInt("highscore");
 		
-		}
-		SetPageState (PageState.GameOver);
-	}
+        if (score > savedScore)
+        {
+            PlayerPrefs.SetInt("highscore", score);
+        }
 
-	void OnPlayerScored(){
+        SetPageState(PageState.GameOver);
+    }
+
+    void OnPlayerScored()
+    {
+        score++;
+        scoreText.text = score.ToString();
+    }
+
+    void SetPageState(PageState state)
+    {
+        switch (state)
+        {
+            case PageState.None:
+                startPage.SetActive(false);
+                gameOverPage.SetActive(false);
+                countdownPage.SetActive(false);
+                break;
+            case PageState.Start:
+                startPage.SetActive(true);
+                gameOverPage.SetActive(false);
+                countdownPage.SetActive(false);
+                break;
+            case PageState.GameOver:
+                startPage.SetActive(false);
+                gameOverPage.SetActive(true);
+                countdownPage.SetActive(false);
+                break;
+            case PageState.Countdown:
+                startPage.SetActive(false);
+                gameOverPage.SetActive(false);
+                countdownPage.SetActive(true);
+                break;
+        }
+    }
+
+    public void ConfirmedGameOver()
+    {
+        OnGameOverConfirmed();
+        scoreText.text = "0";
+        SetPageState(PageState.Start);
+    }
 	
-		score++;
-		scoreText.text = score.ToString();
-	}
-
-	void SetPageState(PageState state){
-
-		switch (state) {
-
-		case PageState.None:
-			startPage.SetActive (false);
-			gameOverPage.SetActive (false);
-			countdownPage.SetActive (false);
-			break;
-		case PageState.Start:
-			startPage.SetActive (true);
-			gameOverPage.SetActive (false);
-			countdownPage.SetActive (false);
-			break;
-		case PageState.GameOver:
-			startPage.SetActive (false);
-			gameOverPage.SetActive (true);
-			countdownPage.SetActive (false);
-			break;
-		case PageState.Countdown:
-			startPage.SetActive (false);
-			gameOverPage.SetActive (false);
-			countdownPage.SetActive (true);
-			break;
-
-		}
-	}
-
-	public void ConfirmedGameOver(){
-		OnGameOverConfirmed();
-		scoreText.text="0";
-		SetPageState (PageState.Start);
-	}
-	public void StartGame(){
-		SetPageState(PageState.Countdown);
-	}
+    public void StartGame()
+    {
+        SetPageState(PageState.Countdown);
+    }
 }
